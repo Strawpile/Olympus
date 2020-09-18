@@ -1,5 +1,6 @@
 import re
 import time
+import os
 
 lst = []
 d = {}
@@ -13,7 +14,7 @@ fhand = open('vocab.txt')
 #get the first n vocab words from the file, and put them in a list
 n = 0
 for line in fhand:
-    if n > 10:
+    if n > 20:
         break
     else:
         lst.append(line)
@@ -25,8 +26,8 @@ for item in lst:
 
 
 #parse out the vocab words and their defintions
-wrds_defs = re.findall(r'\b\w+\s+\([vna]d*j*\.\)\s+.*\n*.*\.', s)
-print(wrds_defs)
+wrds_defs = re.findall(r'\b\w+\s+\([vna]d*j*\.\)\s+.*\n*.*\.\)', s)
+
 for item in wrds_defs:
     vocab_word = item.split()
     word = vocab_word[0]
@@ -38,21 +39,32 @@ for item in wrds_defs:
 
     d[word] = definition
     def_list.append(d[word])
-    print ('The word is: ' + word)
-    print('The definition of the word is: ' + definition)
+    #print ('The word is: ' + word)
+    #print('The definition of the word is: ' + definition)
 
 
 for key, val in d.items():
-    print ('Think about the word: '+ key)
-    time.sleep(3)
-    print('Definition: ' + val)
+    os.system('clear')
+    print ('Think about the word: '+ key +'\n')
+    time.sleep(2)
+    print('Definition: ' + val + '\n')
+    time.sleep(2)
     answr = input('Did you know the word? ').lower().rstrip()
     if answr[0] == 'y':
         known_words[key] = val
+    else:
+        continue
 
 
-print('These are the words you know: ')
+os.system('clear')
+print('These are the words you know: ' + str(len(known_words.items())) + ' words.')
 for key, val in known_words.items():
+    print(key + '\n')
+    del d[key]
+
+print("These are the words you don't know: ")
+print(f"There are {len(d.items())} words in this list.")
+for key, val in d.items():
     print(key)
 
 
